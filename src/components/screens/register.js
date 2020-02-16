@@ -18,7 +18,7 @@ class Register extends Component {
             <Text style={mainStyles.title}> Register </Text>
 
             <TouchableOpacity style={mainStyles.btn} onPress={() => this.props.navigation.navigate("Login")}>
-                <Text style={mainStyles.btnText}> Login</Text>
+                <Text style={mainStyles.btnText}> Login </Text>
             </TouchableOpacity>
         </View>
     }
