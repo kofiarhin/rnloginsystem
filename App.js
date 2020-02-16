@@ -1,6 +1,12 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import Routes from "./routes";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from 'redux';
+import promiseMiddleware from "redux-promise";
+import reducers from "./reducers";
+
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore);
 
 class App extends Component {
 
@@ -11,7 +17,9 @@ class App extends Component {
 
   render() {
     return (
-      <Routes />
+      <Provider store={createStoreWithMiddleware(reducers)}>
+        <Routes />
+      </Provider>
     )
   }
 }
