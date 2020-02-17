@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { getUser } from "../../../actions"
+import { getUser, loginUser } from "../../../actions"
 import mainStyles from "../../../styles";
 
 class Login extends Component {
@@ -18,11 +18,32 @@ class Login extends Component {
         //get user
         this.props.dispatch(getUser())
 
+        console.log(this.props.userData.userData)
+
+    }
+
+
+    handleLogin = () => {
+
+        let user = {
+            name: "admin",
+            username: "admin",
+            pasword: "password"
+        }
+
+
+        let data = JSON.stringify(user);
+
+        this.props.dispatch(loginUser(data));
+
+        this.props.dispatch(getUser());
+
+        this.props.navigation.navigate("Home")
+
     }
 
     render() {
 
-        console.log(this.props)
 
         return <View style={mainStyles.container}>
             <Text style={{
@@ -53,7 +74,7 @@ class Login extends Component {
                 }} />
             </View>
 
-            <TouchableOpacity style={mainStyles.btn} onPress={() => this.props.navigation.navigate("Home")}>
+            <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleLogin()}>
                 <Text style={mainStyles.btnText}> Login</Text>
             </TouchableOpacity>
 
