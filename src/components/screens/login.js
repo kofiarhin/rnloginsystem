@@ -22,7 +22,8 @@ class Login extends Component {
             username: "",
             password: ""
         },
-        errors: ""
+        errors: "",
+        feedBack: ""
     }
 
     componentDidMount() {
@@ -33,26 +34,29 @@ class Login extends Component {
 
     }
 
+    renderFeedBack = () => {
 
+        let feedBack = this.state.feedBack;
+
+        if (feedBack) {
+            return <View>
+                <Text style={styles.error}> {feedBack} </Text>
+            </View>
+        }
+    }
     handleLogin = () => {
 
         let formData = this.state.formData;
-
         let errors = {}
 
         for (let field in formData) {
-
             if (formData[field] === "") {
-
                 errors[field] = `${field} is empty`
-
             }
         }
 
         if (!_.isEmpty(errors)) {
-
             this.setState({
-
                 errors
             })
 
@@ -67,18 +71,29 @@ class Login extends Component {
 
             firebase.database().ref(`users`).orderByChild("username").once("value").then(snapshot => {
 
-                console.log(snapshot.val());
+                let data = [];
+                snapshot.forEach(childSnapshot => {
+                    data.push({ id: childSnapshot.key, ...childSnapshot.val() });
+                });
+
+                let user = data.find(item => {
+                    return item.username == formData.username
+                })
+
+                //check if password match
+                if (user && user.password === formData.password) {
+                    this.props.dispatch(loginUser(JSON.stringify(formData)));
+                    this.props.navigation.navigate("Home")
+                } else {
+                    this.setState({
+                        feedBack: "Invalid Username/Password combination"
+                    })
+                }
+
+
             })
 
-
-            return;
-
-            this.props.dispatch(loginUser(JSON.stringify(formData)));
-            this.props.navigation.navigate("Home")
         }
-
-
-
 
     }
 
@@ -163,6 +178,8 @@ class Login extends Component {
 
                     </View>
 
+                    {this.renderFeedBack()}
+
                     <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleLogin()}>
                         <Text style={mainStyles.btnText}> Login</Text>
                     </TouchableOpacity>
@@ -191,6 +208,12 @@ const styles = StyleSheet.create({
     text: {
 
         fontSize: 20,
+        marginBottom: 20
+    },
+    error: {
+
+        color: "red",
+        fontSize: 18,
         marginBottom: 20
     }
 })
