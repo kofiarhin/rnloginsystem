@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { getUser, loginUser } from "../../../actions"
+import { getUser, loginUser, logoutUser } from "../../../actions"
 import mainStyles from "../../../styles";
 
 class Login extends Component {
@@ -16,9 +16,9 @@ class Login extends Component {
     componentDidMount() {
 
         //get user
-        this.props.dispatch(getUser())
+        this.props.dispatch(getUser());
 
-        console.log(this.props.userData.userData)
+
 
     }
 
@@ -27,24 +27,18 @@ class Login extends Component {
 
         let user = {
             name: "admin",
-            username: "admin",
-            pasword: "password"
+            username: "esco",
+            password: "password"
         }
 
-
-        let data = JSON.stringify(user);
-
-        this.props.dispatch(loginUser(data));
-
-        this.props.dispatch(getUser());
-
+        this.props.dispatch(loginUser(JSON.stringify(user)));
         this.props.navigation.navigate("Home")
 
     }
 
     render() {
 
-
+        console.log("??????", this.props)
         return <View style={mainStyles.container}>
             <Text style={{
                 fontSize: 30,

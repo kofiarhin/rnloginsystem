@@ -13,43 +13,47 @@ import { getUser, logoutUser } from "../../../actions";
 
 class Home extends Component {
 
+    state = {
+        userData: ""
+    }
+
     componentDidMount() {
 
-        //check if user is logged in
-
-        //get user
         this.props.dispatch(getUser());
-        let user = this.props.userData.userData;
-
-        //check if user is in session
-        if (!user || user == null) {
-
-            //redirect user to login if not logged in
-            this.props.navigation.navigate("Login")
-        }
-
     }
 
     handleLogout = () => {
 
         this.props.dispatch(logoutUser());
-
-        this.props.dispatch(getUser());
-
         this.props.navigation.navigate("Login")
+
+    }
+
+    renderUser = () => {
+
+        let user = this.props.userData.userData;
+
+        if (user) {
+
+            let data = JSON.parse(user);
+
+            return <View>
+
+                <Text style={{
+                    fontSize: 30,
+                    textAlign: 'center',
+                    marginBottom: 20,
+                    textTransform: "capitalize"
+                }}> Welcome: {data.name} </Text>
+            </View>
+        }
+
     }
 
     render() {
 
-        let user = this.props.userData.userData;
-
-        if (!user) {
-
-            return
-        }
-
         return <View style={mainStyles.container}>
-            <Text style={mainStyles.title}> Welcome: {user.name}</Text>
+            {this.renderUser()}
 
             <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleLogout()}>
                 <Text style={mainStyles.btnText}>Logout</Text>

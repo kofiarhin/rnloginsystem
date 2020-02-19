@@ -2,21 +2,21 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 
 
-export function getUser() {
+export async function getUser() {
 
-    let user = AsyncStorage.getItem("user");
+    let user = await AsyncStorage.getItem("user").then(response => response);
     return {
         type: "GET_USER",
         payload: user
     }
 }
-export function loginUser(data) {
 
-    const user = AsyncStorage.setItem("user", data);
+export async function loginUser(data) {
+
+    const user = await AsyncStorage.setItem("user", data);
     return {
         type: "LOGIN_USER",
         payload: {
-            success: true,
             userData: user
         }
     }
