@@ -44,7 +44,7 @@ class Home extends Component {
                     textAlign: 'center',
                     marginBottom: 20,
                     textTransform: "capitalize"
-                }}> Welcome: {data.name} </Text>
+                }}> Welcome: {data.username} </Text>
             </View>
         }
 

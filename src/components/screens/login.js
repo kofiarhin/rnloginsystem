@@ -4,84 +4,182 @@ import {
     Text,
     TextInput,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    ScrollView
 } from "react-native";
 
 import { connect } from "react-redux";
 import { getUser, loginUser, logoutUser } from "../../../actions"
 import mainStyles from "../../../styles";
+import _ from "lodash";
+import firebase from "../../../firebase"
 
 class Login extends Component {
 
-    componentDidMount() {
+    state = {
+        formData: {
+            username: "",
+            password: ""
+        },
+        errors: ""
+    }
 
+    componentDidMount() {
         //get user
         this.props.dispatch(getUser());
 
-
+        //check if user is alread logged in
 
     }
 
 
     handleLogin = () => {
 
-        let user = {
-            name: "admin",
-            username: "esco",
-            password: "password"
+        let formData = this.state.formData;
+
+        let errors = {}
+
+        for (let field in formData) {
+
+            if (formData[field] === "") {
+
+                errors[field] = `${field} is empty`
+
+            }
         }
 
-        this.props.dispatch(loginUser(JSON.stringify(user)));
-        this.props.navigation.navigate("Home")
+        if (!_.isEmpty(errors)) {
 
+            this.setState({
+
+                errors
+            })
+
+        } else {
+
+            //process login
+            //clear all errors
+
+            this.setState({
+                errors: null
+            })
+
+            firebase.database().ref(`users`).orderByChild("username").once("value").then(snapshot => {
+
+                console.log(snapshot.val());
+            })
+
+
+            return;
+
+            this.props.dispatch(loginUser(JSON.stringify(formData)));
+            this.props.navigation.navigate("Home")
+        }
+
+
+
+
+    }
+
+    handleChange = element => {
+
+        let formData = this.state.formData;
+
+        formData[element.field] = element.value;
+
+        this.setState({
+
+            formData
+        })
+    }
+
+    renderError = field => {
+
+        let errors = this.state.errors;
+
+        if (!_.isEmpty(errors)) {
+
+            if (errors[field]) {
+
+                return <View>
+                    <Text style={{
+                        marginTop: 10,
+                        color: "red",
+                        fontSize: 18
+                    }}> {errors[field]} </Text>
+                </View>
+            }
+        }
     }
 
     render() {
 
-        console.log("??????", this.props)
-        return <View style={mainStyles.container}>
-            <Text style={{
-                fontSize: 30,
-                marginBottom: 20,
-                textAlign: "center"
-            }}> Login Here </Text>
+        return <ScrollView>
+
+            <KeyboardAvoidingView>
 
 
-            <View style={styles.inputUnit}>
+                <View style={mainStyles.container}>
+                    <Text style={{
+                        fontSize: 30,
+                        marginBottom: 20,
+                        textAlign: "center"
+                    }}> Login</Text>
 
-                <Text style={styles.text}> Your Email</Text>
 
-                <TextInput placeholder="Email...." borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={{
-                    padding: 10,
-                    height: 60,
-                    fontSize: 20
-                }} />
-            </View>
+                    <View style={styles.inputUnit}>
 
-            <View style={styles.inputUnit}>
-                <Text style={styles.text}> Your Password</Text>
+                        <Text style={styles.text}> Your Email</Text>
 
-                <TextInput placeholder="Email...." borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={{
-                    padding: 10,
-                    height: 60,
-                    fontSize: 20
-                }} />
-            </View>
+                        <TextInput placeholder="Username" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={{
+                            padding: 10,
+                            height: 60,
+                            fontSize: 20
+                        }} onChangeText={username => this.handleChange({
+                            field: "username",
+                            value: username
+                        })} />
+                        {this.renderError("username")}
+                    </View>
 
-            <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleLogin()}>
-                <Text style={mainStyles.btnText}> Login</Text>
-            </TouchableOpacity>
+                    <View style={styles.inputUnit}>
 
-            <TouchableOpacity style={{
-                marginVertical: 20,
-                paddingVertical: 20,
-            }} onPress={() => this.props.navigation.navigate("Register")} >
-                <Text style={{
-                    fontSize: 18
-                }}> Dont Have an Account? Register</Text>
-            </TouchableOpacity>
+                        <Text style={styles.text}> Your Password</Text>
+                        <TextInput placeholder="Password" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={{
+                            padding: 10,
+                            height: 60,
+                            fontSize: 20
+                        }} secureTextEntry
 
-        </View>
+                            onChangeText={password => this.handleChange({
+                                field: "password",
+                                value: password
+                            })}
+
+                        />
+
+                        {this.renderError("password")}
+
+                    </View>
+
+                    <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleLogin()}>
+                        <Text style={mainStyles.btnText}> Login</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{
+                        marginVertical: 20,
+                        paddingVertical: 20,
+                    }} onPress={() => this.props.navigation.navigate("Register")} >
+                        <Text style={{
+                            fontSize: 18
+                        }}> Dont Have an Account? Register</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+            </KeyboardAvoidingView>
+        </ScrollView>
     }
 }
 
