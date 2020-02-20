@@ -53,8 +53,8 @@ class Home extends Component {
     render() {
 
         return <View style={mainStyles.container}>
-
             {this.renderUser()}
+
             <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleLogout()}>
                 <Text style={mainStyles.btnText}>Logout</Text>
             </TouchableOpacity>
