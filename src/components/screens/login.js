@@ -136,22 +136,14 @@ class Login extends Component {
 
 
                 <View style={mainStyles.container}>
-                    <Text style={{
-                        fontSize: 30,
-                        marginBottom: 20,
-                        textAlign: "center"
-                    }}> Login</Text>
+                    <Text style={styles.title}> Login</Text>
 
 
                     <View style={styles.inputUnit}>
 
-                        <Text style={styles.text}> Your Email</Text>
+                        <Text style={styles.text}>Username</Text>
 
-                        <TextInput placeholder="Username" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={{
-                            padding: 10,
-                            height: 60,
-                            fontSize: 20
-                        }} onChangeText={username => this.handleChange({
+                        <TextInput placeholder="Username" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={styles.input} onChangeText={username => this.handleChange({
                             field: "username",
                             value: username
                         })} />
@@ -160,22 +152,14 @@ class Login extends Component {
 
                     <View style={styles.inputUnit}>
 
-                        <Text style={styles.text}> Your Password</Text>
-                        <TextInput placeholder="Password" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={{
-                            padding: 10,
-                            height: 60,
-                            fontSize: 20
-                        }} secureTextEntry
-
+                        <Text style={styles.text}>Password</Text>
+                        <TextInput placeholder="Password" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={styles.input} secureTextEntry
                             onChangeText={password => this.handleChange({
                                 field: "password",
                                 value: password
                             })}
-
                         />
-
                         {this.renderError("password")}
-
                     </View>
 
                     {this.renderFeedBack()}
@@ -215,6 +199,16 @@ const styles = StyleSheet.create({
         color: "red",
         fontSize: 18,
         marginBottom: 20
+    },
+    title: {
+        fontSize: 30,
+        marginBottom: 20,
+        textAlign: "center"
+    },
+    input: {
+        padding: 10,
+        height: 60,
+        fontSize: 20
     }
 })
 const mapStateToProps = state => {
