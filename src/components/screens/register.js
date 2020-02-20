@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import _ from 'lodash';
 
-import mainStyles from "../../../styles";
 
 import firebase from "../../../firebase"
+import styles from "../../../styles"
 
 
 class Register extends Component {
@@ -91,30 +91,40 @@ class Register extends Component {
         return <ScrollView>
             <KeyboardAvoidingView>
 
-                <View style={mainStyles.container}>
+                <View style={styles.container}>
 
-                    <Text style={mainStyles.title}> Create An Account </Text>
+                    <Text style={styles.title}> Create An Account </Text>
 
                     <View>
-                        <Text style={styles.inputText}> Name</Text>
-                        <TextInput placeholder="name" style={styles.input} onChangeText={name => this.handleChange({ field: "name", value: name })} />
+                        <Text style={styles.text}> Name</Text>
+                        <TextInput placeholder="Name" style={styles.input} onChangeText={name => this.handleChange({ field: "name", value: name })} />
                         {this.renderError("name")}
                     </View>
 
                     <View>
-                        <Text style={styles.inputText}> Username</Text>
+                        <Text style={styles.text}> Username</Text>
                         <TextInput placeholder="username" style={styles.input} onChangeText={username => this.handleChange({ field: "username", value: username })} />
                     </View>
 
                     <View>
-                        <Text style={styles.inputText}>Password</Text>
+                        <Text style={styles.text}>Password</Text>
                         <TextInput placeholder="password" secureTextEntry style={styles.input} onChangeText={password => this.handleChange({ field: "password", value: password })} />
                     </View>
 
 
 
-                    <TouchableOpacity style={mainStyles.btn} onPress={() => this.handleSubmit()}>
-                        <Text style={mainStyles.btnText}> Create Account </Text>
+                    <TouchableOpacity style={styles.btn} onPress={() => this.handleSubmit()}>
+                        <Text style={styles.btnText}> Create Account </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{
+                        marginVertical: 20,
+                        paddingVertical: 20,
+                    }} onPress={() => this.props.navigation.navigate("Login")} >
+                        <Text style={{
+                            fontSize: 18,
+                            textAlign: "center"
+                        }}> Already have  an Account? Login</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>
@@ -122,21 +132,6 @@ class Register extends Component {
     }
 }
 
-const styles = StyleSheet.create({
 
-    input: {
-        borderWidth: 1,
-        borderColor: "black",
-        marginBottom: 20,
-        paddingHorizontal: 20,
-        fontSize: 18
-    },
-    inputText: {
-
-        marginBottom: 10,
-        fontSize: 18
-    }
-
-})
 
 export default Register;

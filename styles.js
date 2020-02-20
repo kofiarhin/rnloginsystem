@@ -21,6 +21,33 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: "white",
         fontSize: 18
+    },
+    inputUnit: {
+        marginBottom: 20
+    },
+    text: {
+
+        fontSize: 20,
+        marginBottom: 20
+    },
+    error: {
+
+        color: "red",
+        fontSize: 18,
+        marginBottom: 20
+    },
+    title: {
+        fontSize: 30,
+        marginBottom: 20,
+        textAlign: "center"
+    },
+    input: {
+        padding: 10,
+        height: 60,
+        fontSize: 20,
+        borderWidth: 1,
+        borderColor: "rgba(0, 0, 0, .4)",
+        marginBottom: 20
     }
 })
 

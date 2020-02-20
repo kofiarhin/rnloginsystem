@@ -14,6 +14,7 @@ import { getUser, loginUser, logoutUser } from "../../../actions"
 import mainStyles from "../../../styles";
 import _ from "lodash";
 import firebase from "../../../firebase"
+import styles from "../../../styles";
 
 class Login extends Component {
 
@@ -143,7 +144,7 @@ class Login extends Component {
 
                         <Text style={styles.text}>Username</Text>
 
-                        <TextInput placeholder="Username" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={styles.input} onChangeText={username => this.handleChange({
+                        <TextInput placeholder="Username" style={styles.input} onChangeText={username => this.handleChange({
                             field: "username",
                             value: username
                         })} />
@@ -151,9 +152,8 @@ class Login extends Component {
                     </View>
 
                     <View style={styles.inputUnit}>
-
                         <Text style={styles.text}>Password</Text>
-                        <TextInput placeholder="Password" borderWidth={1} borderColor="rgba(0, 0, 0, .4)" style={styles.input} secureTextEntry
+                        <TextInput placeholder="Password" style={styles.input} secureTextEntry
                             onChangeText={password => this.handleChange({
                                 field: "password",
                                 value: password
@@ -173,7 +173,8 @@ class Login extends Component {
                         paddingVertical: 20,
                     }} onPress={() => this.props.navigation.navigate("Register")} >
                         <Text style={{
-                            fontSize: 18
+                            fontSize: 18,
+                            textAlign: "center"
                         }}> Dont Have an Account? Register</Text>
                     </TouchableOpacity>
 
@@ -184,33 +185,7 @@ class Login extends Component {
     }
 }
 
-const styles = StyleSheet.create({
 
-    inputUnit: {
-        marginBottom: 20
-    },
-    text: {
-
-        fontSize: 20,
-        marginBottom: 20
-    },
-    error: {
-
-        color: "red",
-        fontSize: 18,
-        marginBottom: 20
-    },
-    title: {
-        fontSize: 30,
-        marginBottom: 20,
-        textAlign: "center"
-    },
-    input: {
-        padding: 10,
-        height: 60,
-        fontSize: 20
-    }
-})
 const mapStateToProps = state => {
 
     return {
